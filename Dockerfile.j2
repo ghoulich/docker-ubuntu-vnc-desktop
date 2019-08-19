@@ -65,7 +65,7 @@ RUN apt update \
 # libreoffice  pinta language-pack-zh-hant language-pack-gnome-zh-hant firefox-locale-zh-hant libreoffice-l10n-zh-tw
 
 # install chinese support
-{%if zh-hans == "true" %}
+{%if zh_hans == "true" %}
 RUN apt update \
     && apt install -y fcitx-bin fcitx-table fcitx-table-all libfcitx-qt0 libfcitx-qt5-1 fonts-noto-cjk \
     && cp /usr/share/fcitx/xdg/autostart/fcitx-autostart.desktop /etc/xdg/autostart/ \
