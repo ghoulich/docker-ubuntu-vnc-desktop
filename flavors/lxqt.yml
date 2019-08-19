@@ -5,4 +5,6 @@ addon_packages:
   - chromium-browser
   - ttf-ubuntu-font-family
   - ttf-wqy-zenhei
+  - wget
+  - iftop
 desktop: lxqt
