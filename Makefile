@@ -9,6 +9,8 @@ CUSTOM_USER ?= ubuntu
 PASSWORD ?= ubuntu
 FLAVOR ?= lxqt
 ARCH ?= amd64
+ZH-HANS ?= true
+ANACONDA ?= true
 
 templates = Dockerfile image/etc/supervisor/conf.d/supervisord.conf
 
@@ -39,4 +41,6 @@ clean:
 		-D image=$(IMAGE) \
 		-D localbuild=$(LOCALBUILD) \
 		-D arch=$(ARCH) \
+		-D zh-hans=$(ZH-HANS) \
+		-D anaconda=$(ANACONDA) \
 		$< flavors/$(FLAVOR).yml > $@ || rm $@
