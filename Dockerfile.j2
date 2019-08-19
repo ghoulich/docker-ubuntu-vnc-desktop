@@ -64,6 +64,29 @@ RUN apt update \
 # Additional packages require ~600MB
 # libreoffice  pinta language-pack-zh-hant language-pack-gnome-zh-hant firefox-locale-zh-hant libreoffice-l10n-zh-tw
 
+# install chinese support
+{%if zh-hans == "true" %}
+RUN apt update \
+    && apt install -y fcitx-bin fcitx-table fcitx-table-all libfcitx-qt0 libfcitx-qt5-1 fonts-noto-cjk \
+    && cp /usr/share/fcitx/xdg/autostart/fcitx-autostart.desktop /etc/xdg/autostart/ \
+    && apt autoclean -y \
+    && apt autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
+{%endif%}
+
+{%if anaconda == "true" %}
+RUN wget --quiet https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2019.07-Linux-x86_64.sh -O ~/anaconda.sh \
+    && /bin/bash ~/anaconda.sh -b -p /opt/anaconda \
+    && rm ~/anaconda.sh \
+    && ln -s /opt/anaconda/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
+    && cp /usr/lib/x86_64-linux-gnu/qt5/plugins/platforminputcontexts/libfcitxplatforminputcontextplugin.so /opt/anaconda/pkgs/qt-5.9.7-h5867ecd_1/plugins/platforminputcontexts/ \
+    && cp /usr/lib/x86_64-linux-gnu/qt5/plugins/platforminputcontexts/libfcitxplatforminputcontextplugin.so /opt/anaconda/plugins/platforminputcontexts/ \
+    && cp /opt/anaconda/share/applications/spyder3.desktop /usr/share/applications/ \
+    && sed -i "7s/Icon=spyder3/Icon=\/opt\/anaconda\/share\/icons\/spyder3.png/g" /usr/share/applications/spyder3.desktop \
+    && sed -i "8s/TryExec=spyder3/TryExec=\/opt\/anaconda\/bin\/spyder/g" /usr/share/applications/spyder3.desktop \
+    && sed -i "9s/Exec=spyder3/Exec=\/opt\/anaconda\/bin\/spyder/g" /usr/share/applications/spyder3.desktop
+{%endif%}
+
 # tini for subreap
 ARG TINI_VERSION=v0.18.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-{{arch}} /bin/tini
