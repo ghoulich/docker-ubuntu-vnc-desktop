@@ -1,9 +1,9 @@
 .PHONY: build run
 
-REPO  ?= dorowu/ubuntu-desktop-lxde-vnc
+REPO  ?= registry.cn-hangzhou.aliyuncs.com/ghoulich/ubuntu-desktop-lxqt-vnc
 TAG   ?= latest
 IMAGE ?= ubuntu:18.04
-LOCALBUILD ?= tw
+LOCALBUILD ?= 163
 HTTP_PASSWORD ?= 123456
 CUSTOM_USER ?= ubuntu
 PASSWORD ?= ubuntu
