@@ -13,8 +13,14 @@ FROM arm32v7/{{image}} as system
 COPY --from=amd64 /usr/bin/qemu-arm-static /usr/bin/
 {%endif%}
 
-{% if localbuild %}
-RUN sed -i 's#http://archive.ubuntu.com/#http://tw.archive.ubuntu.com/#' /etc/apt/sources.list; 
+{% if localbuild == "163" %}
+RUN sed -i 's#http://archive.ubuntu.com/#http://mirrors.163.com/#' /etc/apt/sources.list; 
+{%elif localbuild == "aliyun" %}
+RUN sed -i 's#http://archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list; 
+{%elif localbuild == "ustc" %}
+RUN sed -i 's#http://archive.ubuntu.com/#http://mirrors.ustc.edu.cn/#' /etc/apt/sources.list; 
+{%elif localbuild == "tsinghua" %}
+RUN sed -i 's#http://archive.ubuntu.com/#http://mirrors.tuna.tsinghua.edu.cn/#' /etc/apt/sources.list;
 {% endif %}
 
 # built-in packages
@@ -86,8 +92,14 @@ RUN apt-get update \
 ################################################################################
 FROM {{image}} as builder
 
-{% if localbuild %}
-RUN sed -i 's#http://archive.ubuntu.com/#http://tw.archive.ubuntu.com/#' /etc/apt/sources.list; 
+{% if localbuild == "163" %}
+RUN sed -i 's#http://archive.ubuntu.com/#http://mirrors.163.com/#' /etc/apt/sources.list; 
+{% elif localbuild == "aliyun" %}
+RUN sed -i 's#http://archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list; 
+{% elif localbuild == "ustc" %}
+RUN sed -i 's#http://archive.ubuntu.com/#http://mirrors.ustc.edu.cn/#' /etc/apt/sources.list; 
+{% elif localbuild == "tsinghua" %}
+RUN sed -i 's#http://archive.ubuntu.com/#http://mirrors.tuna.tsinghua.edu.cn/#' /etc/apt/sources.list;
 {% endif %}
 
 RUN apt-get update \
@@ -106,6 +118,16 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 # build frontend
 COPY web /src/web
 RUN cd /src/web \
+    && yarn config set registry https://registry.npm.taobao.org --global \
+    && yarn config set sass_binary_site https://npm.taobao.org/mirrors/node-sass --global \
+    && yarn config set electron_mirror https://npm.taobao.org/mirrors/electron/ --global \
+    && yarn config set puppeteer_download_host https://npm.taobao.org/mirrors --global \
+    && yarn config set chromedriver_cdnurl https://npm.taobao.org/mirrors/chromedriver --global \
+    && yarn config set operadriver_cdnurl https://npm.taobao.org/mirrors/operadriver --global \
+    && yarn config set phantomjs_cdnurl https://npm.taobao.org/mirrors/phantomjs --global \
+    && yarn config set selenium_cdnurl https://npm.taobao.org/mirrors/selenium --global \
+    && yarn config set node_inspector_cdnurl https://npm.taobao.org/mirrors/node-inspector --global \
+    && rm -rf yarn.lock \
     && yarn \
     && npm run build
 
@@ -117,7 +139,7 @@ RUN cd /src/web/dist/static/novnc && patch -p0 < /src/web/novnc-armhf-1.patch
 # merge
 ################################################################################
 FROM system
-LABEL maintainer="fcwu.tw@gmail.com"
+LABEL maintainer="ghoulich@aliyun.com"
 
 COPY --from=builder /src/web/dist/ /usr/local/lib/web/frontend/
 COPY image /
