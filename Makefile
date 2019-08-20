@@ -3,8 +3,8 @@
 REG_URL ?= registry.cn-hangzhou.aliyuncs.com
 REG_USERNAME ?= ubuntu
 REG_PASSWORD ?= ubuntu
-REPO_PREFIX ?= ubuntu
-REPO  ?= $(REG_URL)/$(REPO_PREFIX)/ubuntu-desktop-lxqt-vnc
+NAMESPACE ?= ubuntu
+REPO  ?= $(REG_URL)/$(NAMESPACE)/ubuntu-desktop-lxqt-vnc
 TAG   ?= latest
 IMAGE ?= ubuntu:18.04
 LOCALBUILD ?= 163
