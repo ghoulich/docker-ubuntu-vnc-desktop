@@ -1,6 +1,10 @@
 .PHONY: build run
 
-REPO  ?= registry.cn-hangzhou.aliyuncs.com/ghoulich/ubuntu-desktop-lxqt-vnc
+REG_URL ?= registry.cn-hangzhou.aliyuncs.com
+REG_USERNAME ?= ubuntu
+REG_PASSWORD ?= ubuntu
+REPO_PREFIX ?= ubuntu
+REPO  ?= $(REG_URL)/$(REG_PREFIX)/ubuntu-desktop-lxqt-vnc
 TAG   ?= latest
 IMAGE ?= ubuntu:18.04
 LOCALBUILD ?= 163
@@ -34,6 +38,11 @@ gen-ssl:
 
 clean:
 	rm -f $(templates)
+
+upload:
+	docker login --username=$(REG_USERNAME) --password=$(REG_PASSWORD) $(REG_URL)
+	docker push $(REPO):$(TAG)
+	docker logout $(REG_URL)
 		
 %: %.j2 flavors/$(FLAVOR).yml
 	docker run -v $(shell pwd):/data vikingco/jinja2cli \
