@@ -93,7 +93,7 @@ RUN apt update \
 {%if zh_hans == "true" %}
 # install chinese support
 RUN apt update \
-    && apt install -y fcitx-bin fcitx-table fcitx-table-all libfcitx-qt0 libfcitx-qt5-1 fonts-noto-cjk \
+    && apt install -y fcitx-bin fcitx-table fcitx-table-all libfcitx-qt0 libfcitx-qt5-1 fonts-noto-cjk language-pack-zh-hans \
     && cp /usr/share/fcitx/xdg/autostart/fcitx-autostart.desktop /etc/xdg/autostart/ \
     && apt autoclean -y \
     && apt autoremove -y \
