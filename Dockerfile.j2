@@ -35,7 +35,20 @@ RUN apt update \
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
+
 # install debs error if combine together
+{% if image == "ubuntu:19.04" %}
+RUN apt update \
+    && apt install -y --no-install-recommends --allow-unauthenticated \
+        xvfb vim-tiny firefox chromium-browser ttf-ubuntu-font-family ttf-wqy-zenhei \
+    && wget https://launchpadlibrarian.net/412597288/x11vnc_0.9.16-1_amd64.deb \
+    && wget https://launchpadlibrarian.net/412597286/x11vnc-data_0.9.16-1_all.deb \
+    && apt install -y ./x11vnc_0.9.16-1_amd64.deb ./x11vnc-data_0.9.16-1_all.deb \
+    && rm -rf x11vnc_0.9.16-1_amd64.deb x11vnc-data_0.9.16-1_all.deb \
+    && apt autoclean -y \
+    && apt autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
+{% else %}
 RUN add-apt-repository -y ppa:fcwu-tw/apps \
     && apt update \
     && apt install -y --no-install-recommends --allow-unauthenticated \
@@ -45,6 +58,8 @@ RUN add-apt-repository -y ppa:fcwu-tw/apps \
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
+{% endif %}
+
 {%if desktop == "lxde" %}
 RUN apt update \
     && apt install -y --no-install-recommends --allow-unauthenticated \
@@ -52,7 +67,8 @@ RUN apt update \
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
-{%endif%} 
+{%endif%}
+
 {%if desktop == "lxqt" %}
 RUN apt update \
     && apt install -y --no-install-recommends --allow-unauthenticated \
