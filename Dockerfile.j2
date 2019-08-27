@@ -64,7 +64,7 @@ RUN apt update \
 # Additional packages require ~600MB
 # libreoffice  pinta language-pack-zh-hant language-pack-gnome-zh-hant firefox-locale-zh-hant libreoffice-l10n-zh-tw
 
-{%if IMAGE == "ubuntu:19.04" %}
+{%if image == "ubuntu:19.04" %}
 # install theme and icons
 RUN apt update \
     && apt install -y --no-install-recommends --allow-unauthenticated lxqt-themes papirus-icon-theme \
