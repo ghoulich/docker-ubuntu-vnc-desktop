@@ -1,6 +1,6 @@
 ---
 addon_packages:
-  - vim-tiny
+  - vim
   - firefox
   - chromium-browser
   - ttf-ubuntu-font-family
